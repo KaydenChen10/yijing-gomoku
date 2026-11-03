@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1b1712">
+  <meta name="description" content="弈境五子棋，邀请好友通过同一个链接实时对弈。">
+  <title>弈境 · 五子棋联机对弈</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231b1712'/%3E%3Ccircle cx='32' cy='32' r='20' fill='%23d8b47b'/%3E%3Ccircle cx='32' cy='32' r='16' fill='%231b1712'/%3E%3Ccircle cx='25' cy='25' r='4' fill='%23f4ead8' opacity='.7'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <div class="paper-noise" aria-hidden="true"></div>
+
+  <div id="landingView" class="view landing-view">
+    <header class="landing-header">
+      <a class="brand" href="./" aria-label="弈境首页">
+        <span class="brand-mark" aria-hidden="true">
+          <span class="brand-stone"></span>
+          <span class="brand-stone brand-stone-small"></span>
+        </span>
+        <span class="brand-copy">
+          <strong>弈境</strong>
+          <small>GOMOKU ONLINE</small>
+        </span>
+      </a>
+      <div class="header-note">
+        <span class="live-dot"></span>
+        实时联机 · 无需注册
+      </div>
+    </header>
+
+    <main class="landing-main">
+      <section class="hero-copy">
+        <p class="eyebrow"><span></span> A QUIET BATTLE OF MINDS</p>
+        <h1>落子有声，<br><em>胜负无言。</em></h1>
+        <p class="hero-description">
+          一方棋盘，两位棋手。把邀请链接发给朋友，入座、准备、开始，
+          让每一次对弈都近在咫尺。
+        </p>
+
+        <div class="entry-card" id="entryCard">
+          <div class="entry-card-top">
+            <div>
+              <span class="entry-kicker" id="entryKicker">START A MATCH</span>
+              <h2 id="entryTitle">邀一位好友，下一局</h2>
+            </div>
+            <span class="entry-seal" aria-hidden="true">弈</span>
+          </div>
+
+          <label class="field-label" for="nicknameInput">你的称呼</label>
+          <div class="nickname-field">
+            <span class="field-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M5.5 19c.8-3.3 3.2-5 6.5-5s5.7 1.7 6.5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </span>
+            <input id="nicknameInput" maxlength="16" autocomplete="nickname" placeholder="给自己取个名字">
+          </div>
+
+          <button id="primaryEntryBtn" class="button button-primary entry-main-btn" type="button">
+            <span id="primaryEntryText">创建棋局</span>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M14 7l5 5-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+
+          <div id="roomJoinArea" class="room-join-area">
+            <div class="soft-divider"><span>或者加入已有棋局</span></div>
+            <div class="join-row">
+              <input id="roomCodeInput" maxlength="80" placeholder="房间号 / 邀请链接" aria-label="房间号或邀请链接">
+              <button id="joinEntryBtn" class="button button-quiet" type="button">加入</button>
+            </div>
+          </div>
+
+          <p id="entryHint" class="entry-hint">创建后会生成专属邀请链接，发给朋友即可。</p>
+        </div>
+
+        <div class="feature-row" aria-label="平台特点">
+          <span><i></i>实时同步</span>
+          <span><i></i>15 × 15 标准棋盘</span>
+          <span><i></i>断线可重连</span>
+        </div>
+      </section>
+
+      <section class="hero-art" aria-hidden="true">
+        <div class="art-orbit art-orbit-one"></div>
+        <div class="art-orbit art-orbit-two"></div>
+        <div class="hero-board-shadow"></div>
+        <div class="hero-board">
+          <div class="hero-board-lines"></div>
+          <span class="hero-stone stone-black s1"></span>
+          <span class="hero-stone stone-black s2"></span>
+          <span class="hero-stone stone-black s3"></span>
+          <span class="hero-stone stone-black s4"></span>
+          <span class="hero-stone stone-white s5"></span>
+          <span class="hero-stone stone-white s6"></span>
+          <span class="hero-stone stone-white s7"></span>
+          <span class="hero-stone stone-white s8"></span>
+          <span class="hero-stone stone-black s9 fresh"></span>
+          <span class="hero-stone stone-white s10"></span>
+          <div class="hero-board-stamp">五</div>
+        </div>
+
+        <div class="floating-card floating-card-top">
+          <span class="mini-stone mini-black"></span>
+          <div><small>BLACK</small><strong>青崖</strong></div>
+          <span class="card-state">思考中</span>
+        </div>
+        <div class="floating-card floating-card-bottom">
+          <span class="mini-stone mini-white"></span>
+          <div><small>WHITE</small><strong>听雨</strong></div>
+          <span class="turn-dots"><i></i><i></i><i></i></span>
+        </div>
+        <p class="art-quote">“棋者，以正合，以奇胜。”</p>
+      </section>
+    </main>
+
+    <footer class="landing-footer">
+      <span>弈境 GOMOKU</span>
+      <span>两枚棋子，一方天地</span>
+    </footer>
+  </div>
+  <div id="roomView" class="view room-view" hidden>
+    <header class="room-header">
+      <a class="brand brand-compact" href="./" id="roomHomeLink" aria-label="返回首页">
+        <span class="brand-mark" aria-hidden="true">
+          <span class="brand-stone"></span>
+          <span class="brand-stone brand-stone-small"></span>
+        </span>
+        <span class="brand-copy">
+          <strong>弈境</strong>
+          <small>GOMOKU ONLINE</small>
+        </span>
+      </a>
+
+      <div class="room-identity">
+        <span class="room-identity-label">对局房间</span>
+        <button id="roomCodeBtn" class="room-code-btn" type="button" title="复制房间号">
+          <span id="roomCode">------</span>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+      </div>
+
+      <div class="room-header-actions">
+        <span id="connectionBadge" class="connection-badge is-connecting"><i></i><span>连接中</span></span>
+        <button id="soundToggle" class="icon-button" type="button" aria-label="关闭音效" title="音效">
+          <svg class="sound-on-icon" viewBox="0 0 24 24" fill="none"><path d="M5 10v4h3l4 3V7L8 10H5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M16 9.2c1.3 1.5 1.3 4.1 0 5.6M18.5 6.8c2.7 2.9 2.7 7.5 0 10.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg class="sound-off-icon" viewBox="0 0 24 24" fill="none"><path d="M5 10v4h3l4 3V7L8 10H5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m16 10 4 4m0-4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <button id="leaveBtn" class="icon-button leave-button" type="button" title="退出房间">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M14 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2M9 12h11m-3-3 3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>退出</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="room-layout">
+      <aside class="panel match-panel">
+        <div class="panel-topline">
+          <span class="panel-eyebrow">MATCH</span>
+          <span id="roundBadge" class="round-badge">第 1 局</span>
+        </div>
+
+        <div class="match-status">
+          <span id="statusBadge" class="status-badge"><i></i><span>等待中</span></span>
+          <h1 id="statusTitle">等待棋手入座</h1>
+          <p id="statusSubtitle">把邀请链接发给朋友，棋局就可以开始了。</p>
+        </div>
+
+        <div class="roster">
+          <article id="blackPlayerCard" class="player-card black-player is-empty" data-seat="black">
+            <div class="player-stone black-stone"><span></span></div>
+            <div class="player-info">
+              <span class="player-seat">BLACK · 执黑</span>
+              <strong class="player-name">等待入座</strong>
+              <span class="player-state"><i></i>空位</span>
+            </div>
+            <span class="you-tag" hidden>你</span>
+            <span class="turn-mark" aria-hidden="true"></span>
+          </article>
+
+          <div class="versus-line"><span></span><em>对</em><span></span></div>
+
+          <article id="whitePlayerCard" class="player-card white-player is-empty" data-seat="white">
+            <div class="player-stone white-stone"><span></span></div>
+            <div class="player-info">
+              <span class="player-seat">WHITE · 执白</span>
+              <strong class="player-name">等待入座</strong>
+              <span class="player-state"><i></i>空位</span>
+            </div>
+            <span class="you-tag" hidden>你</span>
+            <span class="turn-mark" aria-hidden="true"></span>
+          </article>
+        </div>
+
+        <div id="readyProgress" class="ready-progress" hidden>
+          <div class="ready-progress-copy">
+            <span>准备状态</span>
+            <strong id="readyCount">0 / 2</strong>
+          </div>
+          <div class="ready-track"><span id="readyBar"></span></div>
+        </div>
+
+        <button id="primaryAction" class="button button-primary action-button" type="button" disabled>
+          <span>等待对手加入</span>
+        </button>
+        <p id="actionHint" class="action-hint">两位棋手都点击开始后，对局自动开始。</p>
+
+        <button id="shareInviteBtn" class="button button-outline share-button" type="button">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8.5 13.5 15.5 17M15.5 7 8.5 10.5M18 6a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM6 10a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Zm12 5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          复制邀请链接
+        </button>
+
+        <div class="rule-card">
+          <div class="rule-card-title"><span>局制</span><i></i></div>
+          <div class="rule-grid">
+            <div><span>棋盘</span><strong>15 × 15</strong></div>
+            <div><span>规则</span><strong>五子连珠</strong></div>
+            <div><span>先手</span><strong>黑棋</strong></div>
+            <div><span>同步</span><strong>实时</strong></div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="board-stage" aria-label="五子棋棋盘">
+        <div class="board-toolbar">
+          <div id="turnIndicator" class="turn-indicator is-idle">
+            <span class="turn-stone black-stone"></span>
+            <div>
+              <small id="turnLabel">WAITING</small>
+              <strong id="turnText">等待棋局开始</strong>
+            </div>
+          </div>
+          <div class="clock-wrap">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.4"/><path d="M12 7.5V12l3 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span id="gameClock">00:00</span>
+          </div>
+        </div>
+
+        <div class="board-frame">
+          <div class="board-frame-inner">
+            <canvas id="boardCanvas" tabindex="0" aria-label="五子棋棋盘，点击交叉点落子"></canvas>
+            <div id="boardOverlay" class="board-overlay">
+              <span class="overlay-stone black-stone"></span>
+              <strong id="overlayTitle">等待另一位棋手</strong>
+              <p id="overlayText">邀请链接已生成，分享给朋友即可入座。</p>
+              <button id="overlayShareBtn" class="button button-light" type="button">复制邀请链接</button>
+            </div>
+          </div>
+          <span class="frame-corner corner-tl" aria-hidden="true"></span>
+          <span class="frame-corner corner-tr" aria-hidden="true"></span>
+          <span class="frame-corner corner-bl" aria-hidden="true"></span>
+          <span class="frame-corner corner-br" aria-hidden="true"></span>
+        </div>
+
+        <div class="board-footer">
+          <span id="yourRole" class="your-role"><i></i>观战者</span>
+          <span id="boardHint">等待棋局开始</span>
+          <span class="coordinate-note">A–O · 1–15</span>
+        </div>
+      </section>
+
+      <aside class="panel social-panel">
+        <div class="social-header">
+          <div>
+            <span class="panel-eyebrow">ROOM FEED</span>
+            <h2>对局动态</h2>
+          </div>
+          <span id="onlineCount" class="online-count"><i></i>1 在线</span>
+        </div>
+
+        <div class="feed-tabs" role="tablist" aria-label="对局信息">
+          <button id="activityTab" class="feed-tab is-active" type="button" role="tab" aria-selected="true">动态</button>
+          <button id="movesTab" class="feed-tab" type="button" role="tab" aria-selected="false">棋谱 <span id="moveCount">0</span></button>
+        </div>
+
+        <div id="activityFeed" class="activity-feed" aria-live="polite"></div>
+        <div id="moveFeed" class="move-feed" hidden></div>
+
+        <div id="emoteRow" class="emote-row" aria-label="快捷表情">
+          <button type="button" data-emote="好棋！">好棋</button>
+          <button type="button" data-emote="再想一想 🤔">思考</button>
+          <button type="button" data-emote="精彩！👏">精彩</button>
+          <button type="button" data-emote="承让 🙏">承让</button>
+        </div>
+
+        <form id="chatForm" class="chat-form" autocomplete="off">
+          <input id="chatInput" maxlength="120" placeholder="说点什么..." aria-label="发送消息">
+          <button type="submit" aria-label="发送消息">
+            <svg viewBox="0 0 24 24" fill="none"><path d="m4 4 16 8-16 8 3-8-3-8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 12h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </button>
+        </form>
+      </aside>
+    </main>
+
+    <div id="mobileStatus" class="mobile-status" aria-live="polite"></div>
+  </div>
+
+  <div id="loadingView" class="loading-view" hidden>
+    <div class="loading-mark"><span></span><span></span><span></span></div>
+    <p>正在进入棋局</p>
+  </div>
+
+  <div id="toastRegion" class="toast-region" aria-live="assertive" aria-atomic="true"></div>
+
+  <dialog id="leaveDialog" class="confirm-dialog">
+    <form method="dialog">
+      <span class="confirm-seal">弈</span>
+      <h2>要离开这局棋吗？</h2>
+      <p>如果对局正在进行，离开会判负。你也可以直接关闭页面，稍后回来继续。</p>
+      <div class="dialog-actions">
+        <button class="button button-quiet" value="cancel">继续下棋</button>
+        <button id="confirmLeaveBtn" class="button button-danger" value="confirm">确认离开</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="peerjs.min.js" defer></script>
+  <script src="p2p-shim.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>

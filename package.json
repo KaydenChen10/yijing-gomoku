@@ -1,0 +1,14 @@
+{
+  "name": "yijing-gomoku",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A real-time two-player Gomoku platform with room links.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
